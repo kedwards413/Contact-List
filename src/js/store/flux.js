@@ -1,31 +1,88 @@
 const getState = ({ getStore, setStore }) => {
 	return {
 		store: {
-			contacts: [
-				{
-					agenda_slug: "kaela_edwards",
-					full_name: "Javon Edwards",
-					email: "kaela@gmail.com",
-					phone: "7864445566",
-					address: "47568 NW 34ST, 33434 FL, USA"
-				}
-			]
+			contacts: []
 		},
 		actions: {
-			addContact: () => {
-				fetch("https://example.com/profile", {
-					method: "POST", // or 'PUT'
+			deleteContact: id => {
+				fetch(`https://assets.breatheco.de/apis/fake/contact/${id}`, { method: "DELETE" })
+					.then(response => response.json())
+					.then(response => {
+						fetch("https://assets.breatheco.de/apis/fake/contact/agenda/kaela_edwards")
+							.then(function(response) {
+								if (!response.ok) {
+									throw Error(response.statusText);
+								}
+								// Read the response as json.
+								return response.json();
+							})
+							.then(function(responseAsJson) {
+								setStore({ contacts: responseAsJson });
+							})
+							.catch(function(error) {
+								console.log("Looks like there was a problem: \n", error);
+							});
+					});
+			},
+			editContact: editedContact => {
+				editedContact.agenda_slug = "kaela_edwards";
+
+				fetch(`https://assets.breatheco.de/apis/fake/contact/contact/${editedContact.id}`, {
+					method: "PUT",
 					headers: {
 						"Content-Type": "application/json"
 					},
-					body: JSON.stringify(data)
+					body: JSON.stringify(editedContact)
 				})
 					.then(response => response.json())
-					.then(data => {
-						console.log("Success:", data);
-					})
-					.catch(error => {
-						console.error("Error:", error);
+					.then(response => {
+						fetch("https://assets.breatheco.de/apis/fake/contact/agenda/kaela_edwards")
+							.then(function(response) {
+								if (!response.ok) {
+									throw Error(response.statusText);
+								}
+								// Read the response as json.
+								return response.json();
+							})
+							.then(function(responseAsJson) {
+								setStore({ contacts: responseAsJson });
+							})
+							.catch(function(error) {
+								console.log("Looks like there was a problem: \n", error);
+							});
+					});
+			},
+
+			addContact: newContact => {
+				const tempStore = getStore();
+				const updatedContacts = tempStore.contacts.concat(newContact);
+				setStore({ contacts: updatedContacts });
+
+				newContact.agenda_slug = "kaela_edwards";
+
+				fetch("https://assets.breatheco.de/apis/fake/contact/", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(newContact)
+				})
+					.then(response => response.json())
+					.then(response => {
+						fetch("https://assets.breatheco.de/apis/fake/contact/agenda/kaela_edwards")
+							.then(function(response) {
+								if (!response.ok) {
+									throw Error(response.statusText);
+								}
+								// Read the response as json.
+								return response.json();
+							})
+							.then(function(responseAsJson) {
+								setStore({ contacts: responseAsJson });
+							})
+							.catch(function(error) {
+								console.log("Looks like there was a problem: \n", error);
+							});
 					});
 			},
 			getInitialData: () => {
