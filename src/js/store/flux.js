@@ -1,4 +1,4 @@
-const getState = ({ getStore, setStore }) => {
+const getState = ({ getStore, setStore, getActions }) => {
 	return {
 		store: {
 			contacts: []
@@ -24,65 +24,35 @@ const getState = ({ getStore, setStore }) => {
 							});
 					});
 			},
-			editContact: editedContact => {
-				editedContact.agenda_slug = "kaela_edwards";
-
-				fetch(`https://assets.breatheco.de/apis/fake/contact/contact/${editedContact.id}`, {
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify(editedContact)
-				})
-					.then(response => response.json())
-					.then(response => {
-						fetch("https://assets.breatheco.de/apis/fake/contact/agenda/kaela_edwards")
-							.then(function(response) {
-								if (!response.ok) {
-									throw Error(response.statusText);
-								}
-								// Read the response as json.
-								return response.json();
-							})
-							.then(function(responseAsJson) {
-								setStore({ contacts: responseAsJson });
-							})
-							.catch(function(error) {
-								console.log("Looks like there was a problem: \n", error);
-							});
-					});
-			},
-
-			addContact: newContact => {
+			editContact: contactToEdit => {
 				const tempStore = getStore();
-				const updatedContacts = tempStore.contacts.concat(newContact);
-				setStore({ contacts: updatedContacts });
-
-				newContact.agenda_slug = "kaela_edwards";
-
+				console.log(contactToEdit);
 				fetch("https://assets.breatheco.de/apis/fake/contact/", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
 					},
-					body: JSON.stringify(newContact)
+					body: JSON.stringify(contactToEdit)
 				})
 					.then(response => response.json())
-					.then(response => {
-						fetch("https://assets.breatheco.de/apis/fake/contact/agenda/kaela_edwards")
-							.then(function(response) {
-								if (!response.ok) {
-									throw Error(response.statusText);
-								}
-								// Read the response as json.
-								return response.json();
-							})
-							.then(function(responseAsJson) {
-								setStore({ contacts: responseAsJson });
-							})
-							.catch(function(error) {
-								console.log("Looks like there was a problem: \n", error);
-							});
+					.then(() => {
+						getActions().getInitialData();
+					});
+			},
+
+			addContact: contactToAdd => {
+				const tempStore = getStore();
+				console.log(contactToAdd);
+				fetch("https://assets.breatheco.de/apis/fake/contact/", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(contactToAdd)
+				})
+					.then(response => response.json())
+					.then(() => {
+						getActions().getInitialData();
 					});
 			},
 			getInitialData: () => {

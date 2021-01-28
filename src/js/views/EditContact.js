@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export const EditContact = () => {
 	const { store, actions } = useContext(Context);
-
+	const history = useHistory();
 	const [editedContact, setEditedContact] = useState({
 		full_name: "",
 		email: "",
 		id: "",
 		phone: "",
-		address: ""
+		address: "",
+		agenda_slug: "kaela_edwards"
 	});
 
 	const handleChange = event => setEditedContact({ ...editedContact, [event.target.name]: event.target.value });
@@ -69,6 +69,7 @@ export const EditContact = () => {
 					<button
 						onClick={() => {
 							actions.editContact(editedContact);
+							history.push("/");
 						}}
 						type="button"
 						className="btn btn-primary form-control">

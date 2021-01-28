@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
 import PropTypes from "prop-types";
 import { ContactCard } from "../component/ContactCard.js";
 import { Context } from "../store/appContext";
@@ -9,6 +10,7 @@ export const Modal = props => {
 	const [state, setState] = useState({
 		//initialize state here
 	});
+	const history = useHistory();
 	return (
 		<div className="modal" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
 			<div className="modal-dialog" role="document">
@@ -39,7 +41,10 @@ export const Modal = props => {
 							type="button"
 							className="btn btn-secondary"
 							data-dismiss="modal"
-							onClick={() => actions.deleteContact(props.id)}>
+							onClick={() => {
+								actions.deleteContact(props.id);
+								history.push("/");
+							}}>
 							Do it!
 						</button>
 					</div>

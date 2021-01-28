@@ -1,28 +1,32 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ContactCard } from "../component/ContactCard.js";
 import { Context } from "../store/appContext";
 
 export const AddContact = () => {
 	const { store, actions } = useContext(Context);
-	const [name, setName] = useState("");
-	const [address, setAddress] = useState("");
-	const [phone, setPhone] = useState("");
-	const [email, setEmail] = useState("");
+	const history = useHistory();
+	const [newContact, setNewContact] = useState({
+		full_name: "",
+		address: "",
+		email: "",
+		phone: "",
+		agenda_slug: "kaela_edwards"
+	});
 
 	return (
 		<div className="container">
 			<div>
 				<h1 className="text-center mt-5">Add a new contact</h1>
-				<form>
+				<div>
 					<div className="form-group">
 						<label>Full Name</label>
 						<input
 							type="text"
 							className="form-control"
 							placeholder="Full Name"
-							onChange={event => setName(event.target.value)}
+							onChange={event => setNewContact({ ...newContact, full_name: event.target.value })}
 						/>
 					</div>
 					<div className="form-group">
@@ -31,7 +35,7 @@ export const AddContact = () => {
 							type="email"
 							className="form-control"
 							placeholder="Enter email"
-							onChange={event => setEmail(event.target.value)}
+							onChange={event => setNewContact({ ...newContact, email: event.target.value })}
 						/>
 					</div>
 					<div className="form-group">
@@ -40,7 +44,7 @@ export const AddContact = () => {
 							type="phone"
 							className="form-control"
 							placeholder="Enter phone"
-							onChange={event => setPhone(event.target.value)}
+							onChange={event => setNewContact({ ...newContact, phone: event.target.value })}
 						/>
 					</div>
 					<div className="form-group">
@@ -49,21 +53,22 @@ export const AddContact = () => {
 							type="text"
 							className="form-control"
 							placeholder="Enter address"
-							onChange={event => setAddress(event.target.value)}
+							onChange={event => setNewContact({ ...newContact, address: event.target.value })}
 						/>
 					</div>
 					<button
 						type="button"
 						className="btn btn-primary form-control"
-						oonClick={() => {
+						onClick={() => {
 							actions.addContact(newContact);
+							history.push("/");
 						}}>
 						save
 					</button>
 					<Link className="mt-3 w-100 text-center" to="/">
 						or get back to contacts
 					</Link>
-				</form>
+				</div>
 			</div>
 		</div>
 	);
