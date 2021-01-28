@@ -14,8 +14,6 @@ export const EditContact = () => {
 		agenda_slug: "kaela_edwards"
 	});
 
-	const handleChange = event => setEditedContact({ ...editedContact, [event.target.name]: event.target.value });
-
 	return (
 		<div className="container">
 			<div>
@@ -26,7 +24,7 @@ export const EditContact = () => {
 						<input
 							type="text"
 							name="full_name"
-							onChange={handleChange}
+							onChange={event => setEditedContact({ ...editedContact, full_name: event.target.value })}
 							value={editedContact.full_name}
 							className="form-control"
 							placeholder="Full Name"
@@ -38,7 +36,7 @@ export const EditContact = () => {
 						<input
 							type="email"
 							name="email"
-							onChange={handleChange}
+							onChange={event => setEditedContact({ ...editedContact, email: event.target.value })}
 							value={editedContact.email}
 							className="form-control"
 							placeholder="Enter email"
@@ -49,7 +47,7 @@ export const EditContact = () => {
 						<input
 							type="phone"
 							name="phone"
-							onChange={handleChange}
+							onChange={event => setEditedContact({ ...editedContact, phone: event.target.value })}
 							value={editedContact.phone}
 							className="form-control"
 							placeholder="Enter phone"
@@ -60,7 +58,7 @@ export const EditContact = () => {
 						<input
 							type="text"
 							name="address"
-							onChange={handleChange}
+							onChange={event => setEditedContact({ ...editedContact, address: event.target.value })}
 							value={editedContact.address}
 							className="form-control"
 							placeholder="Enter address"
