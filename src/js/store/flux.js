@@ -27,7 +27,7 @@ const getState = ({ getStore, setStore, getActions }) => {
 			editContact: contactToEdit => {
 				const tempStore = getStore();
 				console.log(contactToEdit);
-				fetch("https://assets.breatheco.de/apis/fake/contact/", {
+				fetch(`https://assets.breatheco.de/apis/fake/contact/${contactToEdit.id}`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
