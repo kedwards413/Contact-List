@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import PersonPhoto from "../../img/person.png";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const ContactCard = props => {
+	const { store, actions } = useContext(Context);
 	const [state, setState] = useState({
 		//initialize state here
 	});
@@ -21,8 +23,8 @@ export const ContactCard = props => {
 				</div>
 				<div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
 					<div className=" float-right">
-						<Link to={`/edit/${props.id}`}>
-							<button className="btn">
+						<Link to={`/edit/${props.id}/${props.index}/${props.name}`}>
+							<button className="btn" onClick={() => actions.getContact(props.id)}>
 								<i className="fas fa-pencil-alt mr-3" />
 							</button>
 						</Link>
@@ -68,7 +70,8 @@ ContactCard.propTypes = {
 	phone: PropTypes.string,
 	email: PropTypes.string,
 	contact: PropTypes.object,
-	id: PropTypes.string
+	id: PropTypes.string,
+	index: PropTypes.number
 };
 
 /**

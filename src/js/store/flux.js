@@ -1,7 +1,8 @@
 const getState = ({ getStore, setStore, getActions }) => {
 	return {
 		store: {
-			contacts: []
+			contacts: [],
+			currentContact: null
 		},
 		actions: {
 			deleteContact: id => {
@@ -28,7 +29,7 @@ const getState = ({ getStore, setStore, getActions }) => {
 				const tempStore = getStore();
 				console.log(contactToEdit);
 				fetch(`https://assets.breatheco.de/apis/fake/contact/${contactToEdit.id}`, {
-					method: "POST",
+					method: "PUT",
 					headers: {
 						"Content-Type": "application/json"
 					},
@@ -39,7 +40,24 @@ const getState = ({ getStore, setStore, getActions }) => {
 						getActions().getInitialData();
 					});
 			},
-
+			getContact: contactId => {
+				fetch(`https://assets.breatheco.de/apis/fake/contact/${contactId}`)
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error(response.statusText);
+						}
+						// Read the response as json.
+						return response.json();
+					})
+					.then(function(responseAsJson) {
+						//setStore({ characters: responseAsJson.results });
+						setStore({ currentContact: responseAsJson });
+						console.log(responseAsJson);
+					})
+					.catch(function(error) {
+						console.log("Looks like there was a problem: \n", error);
+					});
+			},
 			addContact: contactToAdd => {
 				const tempStore = getStore();
 				console.log(contactToAdd);

@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export const EditContact = () => {
 	const { store, actions } = useContext(Context);
 	const history = useHistory();
-	const params = useParams();
 	const [editedContact, setEditedContact] = useState({
-		full_name: store.contacts[params.index].full_name,
-		email: store.contacts[params.index].email,
-		phone: store.contacts[params.index].phone,
-		address: store.contacts[params.index].address,
-		id: store.contacts[params.index].id,
+		full_name: "",
+		email: "",
+		id: "",
+		phone: "",
+		address: "",
 		agenda_slug: "kaela_edwards"
 	});
-	console.log(params);
+
 	return (
 		<div className="container">
 			<div>
@@ -26,7 +25,7 @@ export const EditContact = () => {
 							type="text"
 							name="full_name"
 							onChange={event => setEditedContact({ ...editedContact, full_name: event.target.value })}
-							value={editedContact.full_name}
+							defaultValue={store.currentContact && store.currentContact.full_name}
 							className="form-control"
 							placeholder="Full Name"
 						/>
@@ -38,7 +37,7 @@ export const EditContact = () => {
 							type="email"
 							name="email"
 							onChange={event => setEditedContact({ ...editedContact, email: event.target.value })}
-							value={editedContact.email}
+							defaultValue={store.currentContact && store.currentContact.email}
 							className="form-control"
 							placeholder="Enter email"
 						/>
@@ -49,7 +48,7 @@ export const EditContact = () => {
 							type="phone"
 							name="phone"
 							onChange={event => setEditedContact({ ...editedContact, phone: event.target.value })}
-							value={editedContact.phone}
+							defaultValue={store.currentContact && store.currentContact.phone}
 							className="form-control"
 							placeholder="Enter phone"
 						/>
@@ -60,7 +59,7 @@ export const EditContact = () => {
 							type="text"
 							name="address"
 							onChange={event => setEditedContact({ ...editedContact, address: event.target.value })}
-							value={editedContact.address}
+							defaultValue={store.currentContact && store.currentContact.address}
 							className="form-control"
 							placeholder="Enter address"
 						/>
