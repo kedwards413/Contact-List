@@ -14,6 +14,7 @@ export const EditContact = () => {
 		id: store.contacts[params.index].id,
 		agenda_slug: "kaela_edwards"
 	});
+
 	console.log(params);
 	return (
 		<div className="container">

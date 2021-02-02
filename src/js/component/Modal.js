@@ -10,7 +10,13 @@ export const Modal = props => {
 	const [state, setState] = useState({
 		//initialize state here
 	});
+	const modalButton = () => {
+		actions.deleteContact(props.id);
+		props.onClose();
+	};
+
 	const history = useHistory();
+
 	return (
 		<div className="modal" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
 			<div className="modal-dialog" role="document">
@@ -34,17 +40,14 @@ export const Modal = props => {
 						<p>Are you sure you want to delete this contact?</p>
 					</div>
 					<div className="modal-footer">
-						<button type="button" className="btn btn-primary">
+						<button type="button" className="btn btn-primary" onClick={() => props.onClose()}>
 							Oh no!
 						</button>
 						<button
 							type="button"
 							className="btn btn-secondary"
 							data-dismiss="modal"
-							onClick={() => {
-								actions.deleteContact(props.id);
-								history.push("/");
-							}}>
+							onClick={() => modalButton()}>
 							Do it!
 						</button>
 					</div>
@@ -70,5 +73,6 @@ Modal.propTypes = {
  **/
 Modal.defaultProps = {
 	show: false,
-	onClose: null
+	onClose: null,
+	id: null
 };
